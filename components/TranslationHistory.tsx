@@ -2,6 +2,7 @@ import { ITranslation } from "@/mongodb/models/UserModel";
 import { auth } from "@clerk/nextjs/server";
 import TimeAgoText from "./TimeAgoText";
 import DeleteTranslationButton from "./DeleteTranslationButton";
+import getBaseUrl from "@/lib/getBaseUrl";
 
 const getLanguage = (code: string) => {
   const lang = new Intl.DisplayNames(["en"], { type: "language" });
@@ -12,22 +13,19 @@ const getLanguage = (code: string) => {
 const TranslationHistory = async () => {
   const { userId } = auth();
 
-  const url = `${
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : process.env.VERCEL_URL
-  }/translationHistory?userId=${userId}`;
-
-  const res = await fetch(url, {
-    next: {
-      tags: ["translationHistory"],
-    },
-  });
+  const res = await fetch(
+    `${getBaseUrl()}/translationHistory?userId=${userId}`,
+    {
+      next: {
+        tags: ["translationHistory"],
+      },
+    }
+  );
 
   const { translations }: { translations: Array<ITranslation> } =
     await res.json();
 
-  (translations);
+  translations;
 
   return (
     <div>

@@ -1,3 +1,4 @@
+import getBaseUrl from "@/lib/getBaseUrl";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
@@ -5,12 +6,6 @@ import Link from "next/link";
 
 const Header = () => {
   const { userId } = auth();
-
-  const url = `${
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : process.env.VERCEL_URL
-  }/translate`;
 
   return (
     <header className="flex items-center justify-between px-8 border-b mb-5">
@@ -31,7 +26,10 @@ const Header = () => {
           <UserButton />
         </div>
       ) : (
-        <SignInButton afterSignInUrl={url} mode="modal" />
+        <SignInButton
+          afterSignInUrl={`${getBaseUrl()}/translate`}
+          mode="modal"
+        />
       )}
     </header>
   );
