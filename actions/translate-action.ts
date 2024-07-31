@@ -1,6 +1,7 @@
 "use server";
 
 import { State } from "@/components/TranslationForm";
+import connectDB from "@/mongodb/db";
 import { ITranslation, addOrUpdateUser } from "@/mongodb/models/UserModel";
 import { auth } from "@clerk/nextjs/server";
 import axios from "axios";
@@ -15,6 +16,7 @@ async function translate(prevState: State, formData: FormData) {
   auth().protect();
 
   const { userId } = auth();
+  
   if (!userId) throw new Error("No user ID");
 
   const rawFormData = {
@@ -51,7 +53,9 @@ async function translate(prevState: State, formData: FormData) {
   const data = res.data;
 
   if (data.error)
-    (`Error ${data.error.code}: ${data.error.message}`);
+    console.log(`Error ${data.error.code}: ${data.error.message}`);
+
+  await connectDB();
 
   if (rawFormData.inputLanguage === "auto")
     rawFormData.inputLanguage = data[0].detectedLanguage.language;
