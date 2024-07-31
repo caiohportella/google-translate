@@ -11,7 +11,7 @@ export default function Home() {
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : `https://${process.env.VERCEL_URL}`
-  }/translate`;
+  }`;
 
   return (
     <main className="flex flex-col items-center justify-center p-10">
@@ -35,7 +35,7 @@ export default function Home() {
         </Link>
       ) : (
         <Button className="bg-blue-500 hover:bg-blue-600 w-full mt-10 lg:w-fit p-5">
-          <SignInButton afterSignInUrl={url} mode="modal">
+          <SignInButton afterSignInUrl={`${url}/translate`} mode="modal">
             Sign In to Get Translating
           </SignInButton>
         </Button>
